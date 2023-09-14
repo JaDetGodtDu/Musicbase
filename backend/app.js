@@ -137,7 +137,47 @@ app.post("/songs", (req, res) => {
   });
 });
 // PUT routing --------------------------------------------------------------------------------------------------------------------------------
-
+app.put("/artists/:id", (req, res) => {
+  const id = req.params.id;
+  const artist = req.body;
+  const query = "UPDATE artists SET artist_name=? WHERE id=?";
+  const values = [artist.name, id];
+  connection.query(query, values, (error, results, fields) => {
+    if (error) {
+      console.log(error);
+      res.json({ message: error });
+    } else {
+      res.json(results);
+    }
+  });
+});
+app.put("/albums/:id", (req, res) => {
+  const id = req.params.id;
+  const album = req.body;
+  const query = "UPDATE albums SET album_name=?, year_of_release=?, artist_id=? WHERE id=?";
+  const values = [album.name, album.year_of_release, album.artist_id, id];
+  connection.query(query, values, (error, results, fields) => {
+    if (error) {
+      console.log(error);
+      res.json({ message: error });
+    } else {
+      res.json(results);
+    }
+  });
+});
+app.put("/songs/:id", async (req, res) => {
+  const id = req.params.id;
+  const song = req.body;
+  const query = "UPDATE songs SET song_name=?, album_id=? WHERE id=?";
+  connection.query(query, values, (error, results, fields) => {
+    if (error) {
+      console.log(error);
+      res.json({ message: error });
+    } else {
+      res.json(results);
+    }
+  });
+});
 // DELETE routing -----------------------------------------------------------------------------------------------------------------------------
 app.delete("/artists/:id", async (req, res) => {
   const id = req.params.id;
