@@ -39,7 +39,16 @@ app.get("/albums", (req, res) => {
   });
 });
 
-app.get("/songs", (req, res) => {});
+app.get("/songs", (req, res) => {
+  const query = "SELECT * FROM songs ORDER BY song_name";
+  connection.query(query, (error, results, fields) => {
+    if (error) {
+      console.log(error);
+    } else {
+      res.json(results);
+    }
+  });
+});
 
 // POST routing
 
