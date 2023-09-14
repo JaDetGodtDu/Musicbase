@@ -12,11 +12,12 @@ app.use(
 
 const port = process.env.PORT || 3000;
 
-// GET routing
+// GET routing -------------------------------------
 app.get("/", (req, res) => {
   res.send("Node Express working at /");
 });
 
+// Tables
 app.get("/artists", (req, res) => {
   const query = "SELECT * FROM artists ORDER BY artist_name;";
   connection.query(query, (error, results, fields) => {
@@ -50,12 +51,27 @@ app.get("/songs", (req, res) => {
   });
 });
 
-// POST routing
+// GET single records from table
+app.get("/artists/:id", (req, res) => {
+  const id = req.params.id;
+  const query = "SELECT * FROM artists WHERE artist_id=?;";
+  const values = [id];
 
-// PUT routing
+  connection.query(query, values, (error, results, fields) => {
+    if (error) {
+      console.log(error);
+    } else {
+      res.json(results[0]);
+    }
+  });
+});
+// POST routing ------------------------------------
 
-// DELETE routing
+// PUT routing -------------------------------------
 
+// DELETE routing ----------------------------------
+
+// Listeners ---------------------------------------
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port} `);
 });
