@@ -65,6 +65,35 @@ app.get("/artists/:id", (req, res) => {
     }
   });
 });
+
+app.get("/albums/:id", (req, res) => {
+  const id = req.params.id;
+  const query = "SELECT * FROM albums WHERE album_id=?;";
+  const values = [id];
+
+  connection.query(query, values, (error, results, fields) => {
+    if (error) {
+      console.log(error);
+    } else {
+      res.json(results[0]);
+    }
+  });
+});
+
+app.get("/songs/:id", (req, res) => {
+  const id = req.params.id;
+  const query = "SELECT * FROM songs WHERE song_id=?;";
+  const values = [id];
+
+  connection.query(query, values, (error, results, fields) => {
+    if (error) {
+      console.log(error);
+    } else {
+      res.json(results[0]);
+    }
+  });
+});
+
 // POST routing ------------------------------------
 app.post("/artists", (req, res) => {
   const artist = req.body;
@@ -80,6 +109,34 @@ app.post("/artists", (req, res) => {
   });
 });
 
+app.post("/albums", (req, res) => {
+  const album = req.body;
+  const query =
+    "INSERT INTO albums(album_name, year_of_release, artist_id) values (?,?,?);";
+  const values = [album.album_name, album.year_of_release, album.artist_id];
+
+  connection.query(query, values, (error, results, fields) => {
+    if (error) {
+      console.log(error);
+    } else {
+      res.json(results);
+    }
+  });
+});
+
+app.post("/songs", (req, res) => {
+  const song = req.body;
+  const query = "INSERT INTO songs(song_name, album_id) values (?,?);";
+  const values = [song.song_name, song.album_id];
+
+  connection.query(query, values, (error, results, fields) => {
+    if (error) {
+      console.log(error);
+    } else {
+      res.json(results);
+    }
+  });
+});
 // PUT routing -------------------------------------
 
 // DELETE routing ----------------------------------
