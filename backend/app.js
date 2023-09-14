@@ -111,8 +111,7 @@ app.post("/artists", (req, res) => {
 
 app.post("/albums", (req, res) => {
   const album = req.body;
-  const query =
-    "INSERT INTO albums(album_name, year_of_release, artist_id) values (?,?,?);";
+  const query = "INSERT INTO albums(album_name, year_of_release, artist_id) values (?,?,?);";
   const values = [album.album_name, album.year_of_release, album.artist_id];
 
   connection.query(query, values, (error, results, fields) => {
@@ -140,7 +139,44 @@ app.post("/songs", (req, res) => {
 // PUT routing --------------------------------------------------------------------------------------------------------------------------------
 
 // DELETE routing -----------------------------------------------------------------------------------------------------------------------------
-
+app.delete("/artists/:id", async (req, res) => {
+  const id = req.params.id;
+  const query = "DELETE FROM artists WHERE id=?";
+  const values = [id];
+  connection.query(query, values, (error, results, fields) => {
+    if (error) {
+      console.log(error);
+      res.json({ message: error });
+    } else {
+      res.json(results);
+    }
+  });
+});
+app.delete("/albums/:id", async (req, res) => {
+  const id = req.params.id;
+  const query = "DELETE FROM albums WHERE id=?";
+  const values = [id];
+  connection.query(query, values, (error, results, fields) => {
+    if (error) {
+      console.log(error);
+      res.json({ message: error });
+    } else {
+      res.json(results);
+    }
+  });
+});
+app.delete("/songs/:id", async (req, res) => {
+  const id = req.params.id;
+  const query = "DELETE FROM songs WHERE id=?";
+  const values = [id];
+  connection.query(query, values, (error, results, fields) => {
+    if (error) {
+      console.log(error);
+    } else {
+      res.json(results);
+    }
+  });
+});
 // Listeners ----------------------------------------------------------------------------------------------------------------------------------
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port} `);
