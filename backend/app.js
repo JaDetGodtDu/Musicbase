@@ -28,7 +28,16 @@ app.get("/artists", (req, res) => {
   });
 });
 
-app.get("/albums", (req, res) => {});
+app.get("/albums", (req, res) => {
+  const query = "SELECT * FROM albums";
+  connection.query(query, (error, results, fields) => {
+    if (error) {
+      console.log(error);
+    } else {
+      res.json(results);
+    }
+  });
+});
 
 app.get("/songs", (req, res) => {});
 
