@@ -17,6 +17,21 @@ app.get("/", (req, res) => {
   res.send("Node Express working at /");
 });
 
+app.get("/artists", (req, res) => {
+  const query = "SELECT * FROM artists ORDER BY artist_name;";
+  connection.query(query, (error, results, fields) => {
+    if (error) {
+      console.log(error);
+    } else {
+      res.json(results);
+    }
+  });
+});
+
+app.get("/albums", (req, res) => {});
+
+app.get("/songs", (req, res) => {});
+
 // POST routing
 
 // PUT routing
