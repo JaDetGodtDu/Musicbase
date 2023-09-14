@@ -66,6 +66,19 @@ app.get("/artists/:id", (req, res) => {
   });
 });
 // POST routing ------------------------------------
+app.post("/artists", (req, res) => {
+  const artist = req.body;
+  const query = "INSERT INTO artists(artist_name) values (?);";
+  const values = [artist.artist_name];
+
+  connection.query(query, values, (error, results, fields) => {
+    if (error) {
+      console.log(error);
+    } else {
+      res.json(results);
+    }
+  });
+});
 
 // PUT routing -------------------------------------
 
