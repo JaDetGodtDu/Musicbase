@@ -3,7 +3,7 @@ import connection from "../database.js";
 
 const trackRouter = Router();
 
-app.get("/tracks", (req, res) => {
+trackRouter.get("/tracks", (req, res) => {
   const query = /* SQL */ `SELECT * FROM tracks ORDER BY track_name`;
   connection.query(query, (error, results, fields) => {
     if (error) {
@@ -14,7 +14,7 @@ app.get("/tracks", (req, res) => {
   });
 });
 
-app.get("/tracks/:id", (req, res) => {
+trackRouter.get("/tracks/:id", (req, res) => {
   const id = req.params.id;
   const query = /* SQL */ `SELECT * FROM tracks WHERE track_id=?;`;
   const values = [id];
@@ -27,7 +27,7 @@ app.get("/tracks/:id", (req, res) => {
     }
   });
 });
-app.post("/tracks", (req, res) => {
+trackRouter.post("/tracks", (req, res) => {
   const track = req.body;
   const query = /* SQL */ `INSERT INTO tracks(track_name, album_id) values (?,?);`;
   const values = [track.song_name, track.album_id];
@@ -40,7 +40,7 @@ app.post("/tracks", (req, res) => {
     }
   });
 });
-app.put("/tracks/:id", async (req, res) => {
+trackRouter.put("/tracks/:id", async (req, res) => {
   const id = req.params.id;
   const track = req.body;
   const query = /* SQL */ `UPDATE tracks SET track_name=?, album_id=? WHERE id=?`;
@@ -54,7 +54,7 @@ app.put("/tracks/:id", async (req, res) => {
     }
   });
 });
-app.delete("/tracks/:id", async (req, res) => {
+trackRouter.delete("/tracks/:id", async (req, res) => {
   const id = req.params.id;
   const query = /* SQL */ `DELETE FROM tracks WHERE id=?`;
   const values = [id];
