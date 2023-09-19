@@ -8,6 +8,9 @@ app.use(
     origin: "*",
   })
 );
+app.use("/albums", albumRouter);
+app.use("artists", artistRouter);
+app.use("tracks", trackRouter);
 
 const port = process.env.PORT || 3000;
 
