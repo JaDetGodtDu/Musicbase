@@ -8,6 +8,7 @@ artistRouter.get("/artists", (req, res) => {
   connection.query(query, (error, results, fields) => {
     if (error) {
       console.log(error);
+      res.json({ message: error });
     } else {
       res.json(results);
     }
@@ -24,6 +25,7 @@ artistRouter.get("/search", (request, response) => {
   connection.query(queryString, values, (error, results) => {
     if (error) {
       console.log(error);
+      res.json({ message: error });
     } else {
       response.json(results);
     }
@@ -38,6 +40,7 @@ artistRouter.get("/artists/:id", (req, res) => {
   connection.query(query, values, (error, results) => {
     if (error) {
       console.log(error);
+      res.json({ message: error });
     } else {
       res.json(results[0]);
     }
@@ -66,6 +69,7 @@ artistRouter.get("/:id/albums", (request, response) => {
   connection.query(queryString, values, (error, results) => {
     if (error) {
       console.log(error);
+      res.json({ message: error });
     } else {
       response.json(results);
     }
@@ -80,6 +84,7 @@ artistRouter.post("/artists", (req, res) => {
   connection.query(query, values, (error, results, fields) => {
     if (error) {
       console.log(error);
+      res.json({ message: error });
     } else {
       res.json(results);
     }

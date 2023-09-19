@@ -110,7 +110,7 @@ albumRouter.get("/:id/tracks", (request, response) => {
   });
 });
 
-app.post("/albums", (req, res) => {
+albumRouter.post("/albums", (req, res) => {
   const album = req.body;
   const query =
     /* SQL */
@@ -127,7 +127,7 @@ app.post("/albums", (req, res) => {
   });
 });
 
-app.put("/albums/:id", (req, res) => {
+albumRouter.put("/albums/:id", (req, res) => {
   const id = req.params.id;
   const album = req.body;
   const query =
@@ -144,7 +144,7 @@ app.put("/albums/:id", (req, res) => {
   });
 });
 
-app.delete("/albums/:id", async (req, res) => {
+albumRouter.delete("/albums/:id", async (req, res) => {
   const id = req.params.id;
   const query = /* SQL */ `DELETE FROM albums WHERE id=?`;
   const values = [id];

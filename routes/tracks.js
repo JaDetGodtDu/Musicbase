@@ -16,6 +16,7 @@ trackRouter.get("/tracks", (request, response) => {
   connection.query(queryString, (error, results) => {
     if (error) {
       console.log(error);
+      res.json({ message: error });
     } else {
       response.json(results);
     }
@@ -39,6 +40,7 @@ trackRouter.get("tracks/:id", (request, response) => {
   connection.query(queryString, values, (error, results) => {
     if (error) {
       console.log(error);
+      res.json({ message: error });
     } else {
       response.json(results[0]);
     }
@@ -53,6 +55,7 @@ trackRouter.post("/tracks", (req, res) => {
   connection.query(query, values, (error, results, fields) => {
     if (error) {
       console.log(error);
+      res.json({ message: error });
     } else {
       res.json(results);
     }
@@ -79,6 +82,7 @@ trackRouter.delete("/tracks/:id", async (req, res) => {
   connection.query(query, values, (error, results, fields) => {
     if (error) {
       console.log(error);
+      res.json({ message: error });
     } else {
       res.json(results);
     }
