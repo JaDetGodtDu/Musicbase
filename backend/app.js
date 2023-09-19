@@ -170,7 +170,7 @@ app.put("/albums/:id", (req, res) => {
 app.put("/tracks/:id", async (req, res) => {
   const id = req.params.id;
   const song = req.body;
-  const query = "UPDATE tracks SET song_name=?, album_id=? WHERE id=?";
+  const query = "UPDATE tracks SET track_name=?, album_id=? WHERE id=?";
   const values = [song.name, album.id, id];
   connection.query(query, values, (error, results, fields) => {
     if (error) {
