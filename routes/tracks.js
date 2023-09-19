@@ -48,7 +48,7 @@ trackRouter.get("tracks/:id", (request, response) => {
 trackRouter.post("/tracks", (req, res) => {
   const track = req.body;
   const query = /* SQL */ `INSERT INTO tracks(track_name, album_id) values (?,?);`;
-  const values = [song.song_name, song.album_id];
+  const values = [track.track_name, track.album_id];
 
   connection.query(query, values, (error, results, fields) => {
     if (error) {
