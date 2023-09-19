@@ -2,13 +2,23 @@ import { Router } from "express";
 import connection from "../database.js";
 const albumRouter = Router();
 
-app.get("/albums", (req, res) => {
-  const query = /* SQL */ `SELECT * FROM albums`;
-  connection.query(query, (error, results, fields) => {
+albumRouter.get("/", (request, response) => {
+  const queryString = /*sql*/ `
+        SELECT DISTINCT albums.album_id, albums.album_name, albums.year_of_release,
+            artists.artist_id AS artistId, artists.artist_name AS artistName,
+            tracks.track_id AS trackId, tracks.track_name AS trackName
+        FROM albums
+        INNER JOIN artists ON albums.artist_id = artists.artist_id
+        INNER JOIN albums_tracks ON albums.album_id = albums_tracks.album_id
+        INNER JOIN tracks ON albums_tracks.track_id = tracks.track_id
+        INNER JOIN tracks_artists ON tracks.track_id = tracks_artists.track_id
+        INNER JOIN artists AS trackArtists ON tracks_artists.artist_id = trackArtists.artist_id;
+    `;
+  connection.query(queryString, (error, results) => {
     if (error) {
       console.log(error);
     } else {
-      res.json(results);
+      response.json(results);
     }
   });
 });
