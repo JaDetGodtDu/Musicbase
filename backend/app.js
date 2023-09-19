@@ -1,6 +1,9 @@
 import cors from "cors";
 import express from "express";
-import connection from "./database.js";
+
+import { getAlbums, getAlbum, addAlbum, updateAlbum, deleteAlbum } from "./routes/albums.js";
+import { getArtists, getArtist, addArtist, updateArtist, deleteArtist } from "./routes/artists.js";
+import { getTracks, getTrack, addTrack, updateTrack, deleteTrack } from "./routes/tracks.js";
 
 const app = express();
 app.use(express.json());
@@ -18,206 +21,39 @@ app.get("/", (req, res) => {
 });
 
 // Tables
-app.get("/artists", (req, res) => {
-  const query = "SELECT * FROM artists ORDER BY artist_name;";
-  connection.query(query, (error, results, fields) => {
-    if (error) {
-      console.log(error);
-    } else {
-      res.json(results);
-    }
-  });
-});
+app.get("/artists", getArtists);
 
-app.get("/albums", (req, res) => {
-  const query = "SELECT * FROM albums";
-  connection.query(query, (error, results, fields) => {
-    if (error) {
-      console.log(error);
-    } else {
-      res.json(results);
-    }
-  });
-});
+app.get("/albums", getAlbums);
 
-app.get("/songs", (req, res) => {
-  const query = "SELECT * FROM songs ORDER BY song_name";
-  connection.query(query, (error, results, fields) => {
-    if (error) {
-      console.log(error);
-    } else {
-      res.json(results);
-    }
-  });
-});
+app.get("/songs", getTracks);
 
 // GET single records from table
-app.get("/artists/:id", (req, res) => {
-  const id = req.params.id;
-  const query = "SELECT * FROM artists WHERE artist_id=?;";
-  const values = [id];
+app.get("/artists/:id", getArtist);
 
-  connection.query(query, values, (error, results, fields) => {
-    if (error) {
-      console.log(error);
-    } else {
-      res.json(results[0]);
-    }
-  });
-});
+app.get("/albums/:id", getAlbum);
 
-app.get("/albums/:id", (req, res) => {
-  const id = req.params.id;
-  const query = "SELECT * FROM albums WHERE album_id=?;";
-  const values = [id];
-
-  connection.query(query, values, (error, results, fields) => {
-    if (error) {
-      console.log(error);
-    } else {
-      res.json(results[0]);
-    }
-  });
-});
-
-app.get("/songs/:id", (req, res) => {
-  const id = req.params.id;
-  const query = "SELECT * FROM songs WHERE song_id=?;";
-  const values = [id];
-
-  connection.query(query, values, (error, results, fields) => {
-    if (error) {
-      console.log(error);
-    } else {
-      res.json(results[0]);
-    }
-  });
-});
+app.get("/songs/:id", getTrack);
 
 // POST routing --------------------------------------------------------------------------------------------------------------------------------
-app.post("/artists", (req, res) => {
-  const artist = req.body;
-  const query = "INSERT INTO artists(artist_name) values (?);";
-  const values = [artist.artist_name];
+app.post("/artists", addArtist);
 
-  connection.query(query, values, (error, results, fields) => {
-    if (error) {
-      console.log(error);
-    } else {
-      res.json(results);
-    }
-  });
-});
+app.post("/albums", addAlbum);
 
-app.post("/albums", (req, res) => {
-  const album = req.body;
-  const query = "INSERT INTO albums(album_name, year_of_release, artist_id) values (?,?,?);";
-  const values = [album.album_name, album.year_of_release, album.artist_id];
-
-  connection.query(query, values, (error, results, fields) => {
-    if (error) {
-      console.log(error);
-    } else {
-      res.json(results);
-    }
-  });
-});
-
-app.post("/songs", (req, res) => {
-  const song = req.body;
-  const query = "INSERT INTO songs(song_name, album_id) values (?,?);";
-  const values = [song.song_name, song.album_id];
-
-  connection.query(query, values, (error, results, fields) => {
-    if (error) {
-      console.log(error);
-    } else {
-      res.json(results);
-    }
-  });
-});
+app.post("/songs", addTrack);
 // PUT routing --------------------------------------------------------------------------------------------------------------------------------
-app.put("/artists/:id", (req, res) => {
-  const id = req.params.id;
-  const artist = req.body;
-  const query = "UPDATE artists SET artist_name=? WHERE id=?";
-  const values = [artist.name, id];
-  connection.query(query, values, (error, results, fields) => {
-    if (error) {
-      console.log(error);
-      res.json({ message: error });
-    } else {
-      res.json(results);
-    }
-  });
-});
-app.put("/albums/:id", (req, res) => {
-  const id = req.params.id;
-  const album = req.body;
-  const query = "UPDATE albums SET album_name=?, year_of_release=?, artist_id=? WHERE id=?";
-  const values = [album.name, album.year_of_release, album.artist_id, id];
-  connection.query(query, values, (error, results, fields) => {
-    if (error) {
-      console.log(error);
-      res.json({ message: error });
-    } else {
-      res.json(results);
-    }
-  });
-});
-app.put("/songs/:id", async (req, res) => {
-  const id = req.params.id;
-  const song = req.body;
-  const query = "UPDATE songs SET song_name=?, album_id=? WHERE id=?";
-  const values = [song.name, album.id, id];
-  connection.query(query, values, (error, results, fields) => {
-    if (error) {
-      console.log(error);
-      res.json({ message: error });
-    } else {
-      res.json(results);
-    }
-  });
-});
+app.put("/artists/:id", updateArtist);
+
+app.put("/albums/:id", updateAlbum);
+
+app.put("/songs/:id", updateTrack);
+
 // DELETE routing -----------------------------------------------------------------------------------------------------------------------------
-app.delete("/artists/:id", async (req, res) => {
-  const id = req.params.id;
-  const query = "DELETE FROM artists WHERE id=?";
-  const values = [id];
-  connection.query(query, values, (error, results, fields) => {
-    if (error) {
-      console.log(error);
-      res.json({ message: error });
-    } else {
-      res.json(results);
-    }
-  });
-});
-app.delete("/albums/:id", async (req, res) => {
-  const id = req.params.id;
-  const query = "DELETE FROM albums WHERE id=?";
-  const values = [id];
-  connection.query(query, values, (error, results, fields) => {
-    if (error) {
-      console.log(error);
-      res.json({ message: error });
-    } else {
-      res.json(results);
-    }
-  });
-});
-app.delete("/songs/:id", async (req, res) => {
-  const id = req.params.id;
-  const query = "DELETE FROM songs WHERE id=?";
-  const values = [id];
-  connection.query(query, values, (error, results, fields) => {
-    if (error) {
-      console.log(error);
-    } else {
-      res.json(results);
-    }
-  });
-});
+app.delete("/artists/:id", deleteArtist);
+
+app.delete("/albums/:id", deleteAlbum);
+
+app.delete("/songs/:id", deleteTrack);
+
 // Listeners ----------------------------------------------------------------------------------------------------------------------------------
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port} `);
