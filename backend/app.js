@@ -19,7 +19,7 @@ app.get("/", (req, res) => {
 
 // Tables
 app.get("/artists", (req, res) => {
-  const query = "SELECT * FROM artists ORDER BY artist_name;";
+  const query = /* SQL */ `SELECT * FROM artists ORDER BY artist_name;`;
   connection.query(query, (error, results, fields) => {
     if (error) {
       console.log(error);
@@ -30,7 +30,7 @@ app.get("/artists", (req, res) => {
 });
 
 app.get("/albums", (req, res) => {
-  const query = "SELECT * FROM albums";
+  const query = /* SQL */ `SELECT * FROM albums`;
   connection.query(query, (error, results, fields) => {
     if (error) {
       console.log(error);
@@ -41,7 +41,7 @@ app.get("/albums", (req, res) => {
 });
 
 app.get("/tracks", (req, res) => {
-  const query = "SELECT * FROM tracks ORDER BY track_name";
+  const query = /* SQL */ `SELECT * FROM tracks ORDER BY track_name`;
   connection.query(query, (error, results, fields) => {
     if (error) {
       console.log(error);
@@ -54,7 +54,7 @@ app.get("/tracks", (req, res) => {
 // GET single records from table
 app.get("/artists/:id", (req, res) => {
   const id = req.params.id;
-  const query = "SELECT * FROM artists WHERE artist_id=?;";
+  const query = /* SQL */ `SELECT * FROM artists WHERE artist_id=?;`;
   const values = [id];
 
   connection.query(query, values, (error, results, fields) => {
@@ -68,7 +68,7 @@ app.get("/artists/:id", (req, res) => {
 
 app.get("/albums/:id", (req, res) => {
   const id = req.params.id;
-  const query = "SELECT * FROM albums WHERE album_id=?;";
+  const query = /* SQL */ `SELECT * FROM albums WHERE album_id=?;`;
   const values = [id];
 
   connection.query(query, values, (error, results, fields) => {
@@ -82,7 +82,7 @@ app.get("/albums/:id", (req, res) => {
 
 app.get("/tracks/:id", (req, res) => {
   const id = req.params.id;
-  const query = "SELECT * FROM tracks WHERE track_id=?;";
+  const query = /* SQL */ `SELECT * FROM tracks WHERE track_id=?;`;
   const values = [id];
 
   connection.query(query, values, (error, results, fields) => {
@@ -97,7 +97,7 @@ app.get("/tracks/:id", (req, res) => {
 // POST routing --------------------------------------------------------------------------------------------------------------------------------
 app.post("/artists", (req, res) => {
   const artist = req.body;
-  const query = "INSERT INTO artists(artist_name) values (?);";
+  const query = /* SQL */ `INSERT INTO artists(artist_name) values (?);`;
   const values = [artist.artist_name];
 
   connection.query(query, values, (error, results, fields) => {
@@ -112,7 +112,8 @@ app.post("/artists", (req, res) => {
 app.post("/albums", (req, res) => {
   const album = req.body;
   const query =
-    "INSERT INTO albums(album_name, year_of_release, artist_id) values (?,?,?);";
+    /* SQL */
+    `INSERT INTO albums(album_name, year_of_release, artist_id) values (?,?,?);`;
   const values = [album.album_name, album.year_of_release, album.artist_id];
 
   connection.query(query, values, (error, results, fields) => {
@@ -126,7 +127,7 @@ app.post("/albums", (req, res) => {
 
 app.post("/tracks", (req, res) => {
   const song = req.body;
-  const query = "INSERT INTO tracks(track_name, album_id) values (?,?);";
+  const query = /* SQL */ `INSERT INTO tracks(track_name, album_id) values (?,?);`;
   const values = [song.song_name, song.album_id];
 
   connection.query(query, values, (error, results, fields) => {
@@ -141,7 +142,7 @@ app.post("/tracks", (req, res) => {
 app.put("/artists/:id", (req, res) => {
   const id = req.params.id;
   const artist = req.body;
-  const query = "UPDATE artists SET artist_name=? WHERE id=?";
+  const query = /* SQL */ `UPDATE artists SET artist_name=? WHERE id=?`;
   const values = [artist.name, id];
   connection.query(query, values, (error, results, fields) => {
     if (error) {
@@ -156,7 +157,8 @@ app.put("/albums/:id", (req, res) => {
   const id = req.params.id;
   const album = req.body;
   const query =
-    "UPDATE albums SET album_name=?, year_of_release=?, artist_id=? WHERE id=?";
+    /* SQL */
+    `UPDATE albums SET album_name=?, year_of_release=?, artist_id=? WHERE id=?`;
   const values = [album.name, album.year_of_release, album.artist_id, id];
   connection.query(query, values, (error, results, fields) => {
     if (error) {
@@ -170,7 +172,7 @@ app.put("/albums/:id", (req, res) => {
 app.put("/tracks/:id", async (req, res) => {
   const id = req.params.id;
   const song = req.body;
-  const query = "UPDATE tracks SET track_name=?, album_id=? WHERE id=?";
+  const query = /* SQL */ `UPDATE tracks SET track_name=?, album_id=? WHERE id=?`;
   const values = [song.name, album.id, id];
   connection.query(query, values, (error, results, fields) => {
     if (error) {
@@ -184,7 +186,7 @@ app.put("/tracks/:id", async (req, res) => {
 // DELETE routing -----------------------------------------------------------------------------------------------------------------------------
 app.delete("/artists/:id", async (req, res) => {
   const id = req.params.id;
-  const query = "DELETE FROM artists WHERE id=?";
+  const query = /* SQL */ `DELETE FROM artists WHERE id=?`;
   const values = [id];
   connection.query(query, values, (error, results, fields) => {
     if (error) {
@@ -197,7 +199,7 @@ app.delete("/artists/:id", async (req, res) => {
 });
 app.delete("/albums/:id", async (req, res) => {
   const id = req.params.id;
-  const query = "DELETE FROM albums WHERE id=?";
+  const query = /* SQL */ `DELETE FROM albums WHERE id=?`;
   const values = [id];
   connection.query(query, values, (error, results, fields) => {
     if (error) {
@@ -210,7 +212,7 @@ app.delete("/albums/:id", async (req, res) => {
 });
 app.delete("/tracks/:id", async (req, res) => {
   const id = req.params.id;
-  const query = "DELETE FROM tracks WHERE id=?";
+  const query = /* SQL */ `DELETE FROM tracks WHERE id=?`;
   const values = [id];
   connection.query(query, values, (error, results, fields) => {
     if (error) {
