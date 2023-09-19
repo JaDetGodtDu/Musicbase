@@ -17,6 +17,7 @@ albumRouter.get("/", (request, response) => {
   connection.query(queryString, (error, results) => {
     if (error) {
       console.log(error);
+      res.json({ message: error });
     } else {
       response.json(results);
     }
@@ -32,8 +33,8 @@ albumRouter.get("/:id", (request, response) => {
                albums.year_of_release AS releaseDate,
                artists.artist_id AS artistId,
                artists.artist_name AS artistName,
-               tracks.track_id AS songId,
-               tracks.track_name AS songTitle,
+               tracks.track_id AS trackId,
+               tracks.track_name AS trackTitle,
                albums_tracks.position
         FROM albums
         INNER JOIN artists ON albums.artist_id = artists.artist_id
@@ -49,25 +50,26 @@ albumRouter.get("/:id", (request, response) => {
   connection.query(queryString, values, (error, results) => {
     if (error) {
       console.log(error);
+      res.json({ message: error });
     } else {
       if (results[0]) {
         const album = results[0];
-        const albumWithSongs = {
+        const albumWithTracks = {
           id: album.id,
           title: album.title,
           releaseDate: album.releaseDate,
           artistId: album.artistId,
           artistName: album.artistName,
-          songs: results.map((song) => {
+          tracks: results.map((track) => {
             return {
-              id: song.songId,
-              title: song.songTitle,
-              position: song.position,
+              id: track.trackId,
+              title: track.trackTitle,
+              position: track.position,
             };
           }),
         };
 
-        response.json(albumWithSongs);
+        response.json(albumWithTracks);
       } else {
         response.json({ message: "No album found" });
       }
@@ -75,6 +77,38 @@ albumRouter.get("/:id", (request, response) => {
   });
 });
 
+albumRouter.get("/:id/tracks", (request, response) => {
+  const id = request.params.id;
+
+  const queryString = /*sql*/ `
+        SELECT albums.album_id AS albumId,
+               albums.album_name AS albumTitle,
+               albums.year_of_release AS albumReleaseDate,
+               tracks.track_id AS trackId,
+               tracks.track_name AS trackTitle,
+               artists.artist_name AS artistName
+        FROM albums
+        INNER JOIN albums_tracks ON albums.album_id = albums_tracks.album_id
+        INNER JOIN tracks ON albums_tracks.track_id = tracks.track_id
+        INNER JOIN tracks_artists ON tracks.track_id = tracks_artists.track_id
+        INNER JOIN artists ON tracks_artists.artist_id = artists.artist_id
+        WHERE albums.album_id = ?;
+    `;
+  const values = [id];
+
+  connection.query(queryString, values, (error, results) => {
+    if (error) {
+      console.log(error);
+      res.json({ message: error });
+    } else {
+      if (results.length) {
+        response.json(results);
+      } else {
+        response.json({ message: "No album found" });
+      }
+    }
+  });
+});
 
 app.post("/albums", (req, res) => {
   const album = req.body;
@@ -86,6 +120,7 @@ app.post("/albums", (req, res) => {
   connection.query(query, values, (error, results, fields) => {
     if (error) {
       console.log(error);
+      res.json({ message: error });
     } else {
       res.json(results);
     }
