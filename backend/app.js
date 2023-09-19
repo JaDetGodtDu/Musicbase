@@ -25,34 +25,34 @@ app.get("/artists", getArtists);
 
 app.get("/albums", getAlbums);
 
-app.get("/songs", getTracks);
+app.get("/tracks", getTracks);
 
 // GET single records from table
 app.get("/artists/:id", getArtist);
 
 app.get("/albums/:id", getAlbum);
 
-app.get("/songs/:id", getTrack);
+app.get("/tracks/:id", getTrack);
 
 // POST routing --------------------------------------------------------------------------------------------------------------------------------
 app.post("/artists", addArtist);
 
 app.post("/albums", addAlbum);
 
-app.post("/songs", addTrack);
+app.post("/tracks", addTrack);
 // PUT routing --------------------------------------------------------------------------------------------------------------------------------
 app.put("/artists/:id", updateArtist);
 
 app.put("/albums/:id", updateAlbum);
 
-app.put("/songs/:id", updateTrack);
+app.put("/tracks/:id", updateTrack);
 
 // DELETE routing -----------------------------------------------------------------------------------------------------------------------------
 app.delete("/artists/:id", deleteArtist);
 
 app.delete("/albums/:id", deleteAlbum);
 
-app.delete("/songs/:id", deleteTrack);
+app.delete("/tracks/:id", deleteTrack);
 
 // Listeners ----------------------------------------------------------------------------------------------------------------------------------
 app.listen(port, () => {
