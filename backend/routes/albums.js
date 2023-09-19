@@ -1,10 +1,10 @@
 import { Router } from "express";
 import connection from "../database.js";
+const albumRouter = Router();
 
-const trackRouter = Router();
-
-app.get("/tracks", (req, res) => {
-  const query = /* SQL */ `SELECT * FROM tracks ORDER BY track_name`;
+app.get("/albums", (req, res) => {
+    const query = /* SQL */ `SELECT DISTINCT albums.*
+  INNER JOIN albums_tracks ON `;
   connection.query(query, (error, results, fields) => {
     if (error) {
       console.log(error);
@@ -14,9 +14,9 @@ app.get("/tracks", (req, res) => {
   });
 });
 
-app.get("/tracks/:id", (req, res) => {
+app.get("/albums/:id", (req, res) => {
   const id = req.params.id;
-  const query = /* SQL */ `SELECT * FROM tracks WHERE track_id=?;`;
+  const query = /* SQL */ `SELECT * FROM albums WHERE album_id=?;`;
   const values = [id];
 
   connection.query(query, values, (error, results, fields) => {
@@ -27,10 +27,13 @@ app.get("/tracks/:id", (req, res) => {
     }
   });
 });
-app.post("/tracks", (req, res) => {
-  const track = req.body;
-  const query = /* SQL */ `INSERT INTO tracks(track_name, album_id) values (?,?);`;
-  const values = [track.song_name, track.album_id];
+
+app.post("/albums", (req, res) => {
+  const album = req.body;
+  const query =
+    /* SQL */
+    `INSERT INTO albums(album_name, year_of_release, artist_id) values (?,?,?);`;
+  const values = [album.album_name, album.year_of_release, album.artist_id];
 
   connection.query(query, values, (error, results, fields) => {
     if (error) {
@@ -40,11 +43,14 @@ app.post("/tracks", (req, res) => {
     }
   });
 });
-app.put("/tracks/:id", async (req, res) => {
+
+app.put("/albums/:id", (req, res) => {
   const id = req.params.id;
-  const track = req.body;
-  const query = /* SQL */ `UPDATE tracks SET track_name=?, album_id=? WHERE id=?`;
-  const values = [track.name, album.id, id];
+  const album = req.body;
+  const query =
+    /* SQL */
+    `UPDATE albums SET album_name=?, year_of_release=?, artist_id=? WHERE id=?`;
+  const values = [album.name, album.year_of_release, album.artist_id, id];
   connection.query(query, values, (error, results, fields) => {
     if (error) {
       console.log(error);
@@ -54,17 +60,19 @@ app.put("/tracks/:id", async (req, res) => {
     }
   });
 });
-app.delete("/tracks/:id", async (req, res) => {
+
+app.delete("/albums/:id", async (req, res) => {
   const id = req.params.id;
-  const query = /* SQL */ `DELETE FROM tracks WHERE id=?`;
+  const query = /* SQL */ `DELETE FROM albums WHERE id=?`;
   const values = [id];
   connection.query(query, values, (error, results, fields) => {
     if (error) {
       console.log(error);
+      res.json({ message: error });
     } else {
       res.json(results);
     }
   });
 });
 
-export default trackRouter;
+export default albumRouter;
