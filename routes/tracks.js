@@ -3,30 +3,48 @@ import connection from "../database.js";
 
 const trackRouter = Router();
 
-trackRouter.get("/tracks", (req, res) => {
-  const query = /* SQL */ `SELECT * FROM tracks ORDER BY track_name`;
-  connection.query(query, (error, results, fields) => {
+trackRouter.get("/tracks", (request, response) => {
+  const queryString = /*sql*/ `
+        SELECT tracks.*,
+               artists.artist_name AS artistName,
+               artists.artist_id AS artistId,
+        FROM tracks
+        INNER JOIN tracks_artists ON tracks.track_id = tracks_artists.track_id
+        INNER JOIN artists ON tracks_artists.artist_id = artists.artist_id;
+    `;
+
+  connection.query(queryString, (error, results) => {
     if (error) {
       console.log(error);
     } else {
-      res.json(results);
+      response.json(results);
     }
   });
 });
 
-trackRouter.get("/tracks/:id", (req, res) => {
-  const id = req.params.id;
-  const query = /* SQL */ `SELECT * FROM tracks WHERE track_id=?;`;
+trackRouter.get("tracks/:id", (request, response) => {
+  const id = request.params.id;
+  const queryString = /*sql*/ `
+        SELECT tracks.*,
+               artists.artist_name AS artistName,
+               artists.artist_id AS artistId,
+        FROM tracks
+        INNER JOIN tracks_artists ON tracks.track_id = tracks_artists.track_id
+        INNER JOIN artists ON tracks_artists.artist_id = artists.artist_id
+        WHERE tracks.track_id = ?;
+    `;
+
   const values = [id];
 
-  connection.query(query, values, (error, results, fields) => {
+  connection.query(queryString, values, (error, results) => {
     if (error) {
       console.log(error);
     } else {
-      res.json(results[0]);
+      response.json(results[0]);
     }
   });
 });
+
 trackRouter.post("/tracks", (req, res) => {
   const track = req.body;
   const query = /* SQL */ `INSERT INTO tracks(track_name, album_id) values (?,?);`;
