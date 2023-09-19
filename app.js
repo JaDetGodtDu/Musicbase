@@ -1,5 +1,8 @@
 import cors from "cors";
 import express from "express";
+import { albumRouter } from "./routes/albums.js";
+import { artistRouter } from "./routes/artists.js";
+import { trackRouter } from "./routes/tracks.js";
 
 const app = express();
 app.use(express.json());
