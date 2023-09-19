@@ -1,6 +1,5 @@
 import cors from "cors";
 import express from "express";
-import connection from "./database.js";
 
 const app = express();
 app.use(express.json());

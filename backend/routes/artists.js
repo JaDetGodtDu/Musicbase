@@ -1,3 +1,8 @@
+import { Router } from "express";
+import connection from "../database.js";
+
+const artistRouter = Router();
+
 app.get("/artists", (req, res) => {
   const query = /* SQL */ `SELECT * FROM artists ORDER BY artist_name;`;
   connection.query(query, (error, results, fields) => {
@@ -65,3 +70,5 @@ app.delete("/artists/:id", async (req, res) => {
     }
   });
 });
+
+export default artistRouter;

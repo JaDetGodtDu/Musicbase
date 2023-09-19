@@ -1,3 +1,7 @@
+import { Router } from "express";
+import connection from "../database.js";
+const albumRouter = Router();
+
 app.get("/albums", (req, res) => {
   const query = /* SQL */ `SELECT * FROM albums`;
   connection.query(query, (error, results, fields) => {
@@ -8,7 +12,6 @@ app.get("/albums", (req, res) => {
     }
   });
 });
-
 
 app.get("/albums/:id", (req, res) => {
   const id = req.params.id;
@@ -70,3 +73,5 @@ app.delete("/albums/:id", async (req, res) => {
     }
   });
 });
+
+export default albumRouter;

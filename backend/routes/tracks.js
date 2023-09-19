@@ -1,3 +1,8 @@
+import { Router } from "express";
+import connection from "../database.js";
+
+const trackRouter = Router();
+
 app.get("/tracks", (req, res) => {
   const query = /* SQL */ `SELECT * FROM tracks ORDER BY track_name`;
   connection.query(query, (error, results, fields) => {
@@ -61,3 +66,5 @@ app.delete("/tracks/:id", async (req, res) => {
     }
   });
 });
+
+export default trackRouter;
