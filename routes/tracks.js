@@ -3,32 +3,32 @@ import connection from "../database.js";
 
 const trackRouter = Router();
 
-trackRouter.get("/tracks", (request, response) => {
+trackRouter.get("/", (request, response) => {
   const queryString = /*sql*/ `
         SELECT tracks.*,
-               artists.artist_name AS artistName,
-               artists.artist_id AS artistId,
-        FROM tracks
-        INNER JOIN tracks_artists ON tracks.track_id = tracks_artists.track_id
-        INNER JOIN artists ON tracks_artists.artist_id = artists.artist_id;
-    `;
+       artists.artist_name AS artistName,
+       artists.artist_id AS artistId
+FROM tracks
+INNER JOIN tracks_artists ON tracks.track_id = tracks_artists.track_id
+INNER JOIN artists ON tracks_artists.artist_id = artists.artist_id
+`;
 
   connection.query(queryString, (error, results) => {
     if (error) {
       console.log(error);
-      res.json({ message: error });
+      response.json({ message: error });
     } else {
       response.json(results);
     }
   });
 });
 
-trackRouter.get("tracks/:id", (request, response) => {
+trackRouter.get("/:id", (request, response) => {
   const id = request.params.id;
   const queryString = /*sql*/ `
         SELECT tracks.*,
                artists.artist_name AS artistName,
-               artists.artist_id AS artistId,
+               artists.artist_id AS artistId
         FROM tracks
         INNER JOIN tracks_artists ON tracks.track_id = tracks_artists.track_id
         INNER JOIN artists ON tracks_artists.artist_id = artists.artist_id
@@ -40,7 +40,7 @@ trackRouter.get("tracks/:id", (request, response) => {
   connection.query(queryString, values, (error, results) => {
     if (error) {
       console.log(error);
-      res.json({ message: error });
+      response.json({ message: error });
     } else {
       response.json(results[0]);
     }
