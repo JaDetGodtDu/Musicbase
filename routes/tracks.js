@@ -44,7 +44,10 @@ trackRouter.post("/", async (req, res) => {
   const artistTrackQuery = /*sql*/ `INSERT INTO tracks_artists (artist_id, track_id) VALUES(?,?)`;
   const artistTrackValues = [track.artistId, newTrackId];
   const [artistTrackResult] = await connection.execute(artistTrackQuery, artistTrackValues);
-  console.log(artistTrackResult);
+  const albumTrackQuery = /*sql*/ `INSERT INTO albums_tracks (album_id, track_id) VALUES(?,?)`;
+  const albumTrackValues = [track.albumId, newTrackId];
+  const [albumTrackResults] = await connection.execute(albumTrackQuery, albumTrackValues);
+  console.log(artistTrackResult, albumTrackResults);
   res.json({ message: "New song created" });
 });
 trackRouter.put("/:id", async (req, res) => {
