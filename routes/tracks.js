@@ -12,15 +12,8 @@ FROM tracks
 INNER JOIN tracks_artists ON tracks.track_id = tracks_artists.track_id
 INNER JOIN artists ON tracks_artists.artist_id = artists.artist_id
 `;
-
-  connection.query(queryString, (error, results) => {
-    if (error) {
-      console.log(error);
-      response.json({ message: error });
-    } else {
-      response.json(results);
-    }
-  });
+  const [results] = await connection.execute(queryString);
+  response.json(results);
 });
 
 trackRouter.get("/:id", (request, response) => {
