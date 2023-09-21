@@ -17,7 +17,7 @@ albumRouter.get("/", (request, response) => {
   connection.query(queryString, (error, results) => {
     if (error) {
       console.log(error);
-      res.json({ message: error });
+      response.json({ message: error });
     } else {
       response.json(results);
     }
@@ -50,7 +50,7 @@ albumRouter.get("/:id", (request, response) => {
   connection.query(queryString, values, (error, results) => {
     if (error) {
       console.log(error);
-      res.json({ message: error });
+      response.json({ message: error });
     } else {
       if (results[0]) {
         const album = results[0];
@@ -99,7 +99,7 @@ albumRouter.get("/:id/tracks", (request, response) => {
   connection.query(queryString, values, (error, results) => {
     if (error) {
       console.log(error);
-      res.json({ message: error });
+      response.json({ message: error });
     } else {
       if (results.length) {
         response.json(results);
