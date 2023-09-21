@@ -47,7 +47,7 @@ trackRouter.get("/:id", (request, response) => {
   });
 });
 
-trackRouter.post("/tracks", (req, res) => {
+trackRouter.post("/", (req, res) => {
   const track = req.body;
   const query = /* SQL */ `INSERT INTO tracks(track_name, album_id) values (?,?);`;
   const values = [track.track_name, track.album_id];
@@ -61,11 +61,11 @@ trackRouter.post("/tracks", (req, res) => {
     }
   });
 });
-trackRouter.put("/tracks/:id", async (req, res) => {
+trackRouter.put("/:id", async (req, res) => {
   const id = req.params.id;
   const track = req.body;
-  const query = /* SQL */ `UPDATE tracks SET track_name=?, album_id=? WHERE id=?`;
-  const values = [track.name, album.id, id];
+  const query = /* SQL */ `UPDATE tracks SET track_name=?, album_id=? WHERE track_id=?`;
+  const values = [track.track_name, track.album_id, id];
   connection.query(query, values, (error, results, fields) => {
     if (error) {
       console.log(error);
@@ -75,9 +75,9 @@ trackRouter.put("/tracks/:id", async (req, res) => {
     }
   });
 });
-trackRouter.delete("/tracks/:id", async (req, res) => {
+trackRouter.delete("/:id", async (req, res) => {
   const id = req.params.id;
-  const query = /* SQL */ `DELETE FROM tracks WHERE id=?`;
+  const query = /* SQL */ `DELETE FROM tracks WHERE track_id=?`;
   const values = [id];
   connection.query(query, values, (error, results, fields) => {
     if (error) {

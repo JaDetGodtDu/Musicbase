@@ -76,7 +76,7 @@ artistRouter.get("/:id/albums", (request, response) => {
   });
 });
 
-artistRouter.post("/artists", (req, res) => {
+artistRouter.post("/", (req, res) => {
   const artist = req.body;
   const query = /* SQL */ `INSERT INTO artists(artist_name) values (?);`;
   const values = [artist.artist_name];
@@ -91,11 +91,11 @@ artistRouter.post("/artists", (req, res) => {
   });
 });
 
-artistRouter.put("/artists/:id", (req, res) => {
+artistRouter.put("/:id", (req, res) => {
   const id = req.params.id;
   const artist = req.body;
-  const query = /* SQL */ `UPDATE artists SET artist_name=? WHERE id=?`;
-  const values = [artist.name, id];
+  const query = /* SQL */ `UPDATE artists SET artist_name=? WHERE artist_id=?`;
+  const values = [artist.artist_name, id];
   connection.query(query, values, (error, results, fields) => {
     if (error) {
       console.log(error);
@@ -106,9 +106,9 @@ artistRouter.put("/artists/:id", (req, res) => {
   });
 });
 
-artistRouter.delete("/artists/:id", async (req, res) => {
+artistRouter.delete("/:id", async (req, res) => {
   const id = req.params.id;
-  const query = /* SQL */ `DELETE FROM artists WHERE id=?`;
+  const query = /* SQL */ `DELETE FROM artists WHERE artist_id=?`;
   const values = [id];
   connection.query(query, values, (error, results, fields) => {
     if (error) {

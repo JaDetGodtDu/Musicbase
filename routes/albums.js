@@ -11,6 +11,7 @@ albumRouter.get("/", (request, response) => {
   INNER JOIN tracks_artists ON tracks.track_id = tracks_artists.track_id
   INNER JOIN artists ON tracks_artists.artist_id = artists.artist_id
       `;
+
   connection.query(queryString, (error, results) => {
     if (error) {
       console.log(error);
@@ -105,7 +106,7 @@ albumRouter.get("/:id/tracks", (request, response) => {
   });
 });
 
-albumRouter.post("/albums", (req, res) => {
+albumRouter.post("/", (req, res) => {
   const album = req.body;
   const query =
     /* SQL */
@@ -122,13 +123,13 @@ albumRouter.post("/albums", (req, res) => {
   });
 });
 
-albumRouter.put("/albums/:id", (req, res) => {
+albumRouter.put("/:id", (req, res) => {
   const id = req.params.id;
   const album = req.body;
   const query =
     /* SQL */
-    `UPDATE albums SET album_name=?, year_of_release=?, artist_id=? WHERE id=?`;
-  const values = [album.name, album.year_of_release, album.artist_id, id];
+    `UPDATE albums SET album_name=?, year_of_release=?, artist_id=? WHERE album_id=?`;
+  const values = [album.album_name, album.year_of_release, album.artist_id, id];
   connection.query(query, values, (error, results, fields) => {
     if (error) {
       console.log(error);
@@ -139,9 +140,9 @@ albumRouter.put("/albums/:id", (req, res) => {
   });
 });
 
-albumRouter.delete("/albums/:id", async (req, res) => {
+albumRouter.delete("/:id", async (req, res) => {
   const id = req.params.id;
-  const query = /* SQL */ `DELETE FROM albums WHERE id=?`;
+  const query = /* SQL */ `DELETE FROM albums WHERE album_id=?`;
   const values = [id];
   connection.query(query, values, (error, results, fields) => {
     if (error) {
