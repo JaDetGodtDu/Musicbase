@@ -3,7 +3,7 @@ import connection from "../database.js";
 
 const artistRouter = Router();
 
-artistRouter.get("/artists", (req, res) => {
+artistRouter.get("/", (req, res) => {
   const query = /* SQL */ `SELECT * FROM artists ORDER BY artist_name;`;
   connection.query(query, (error, results, fields) => {
     if (error) {
@@ -19,20 +19,20 @@ artistRouter.get("/search", (request, response) => {
   const queryString = /*sql*/ `
     SELECT * 
     FROM artists
-    WHERE name LIKE ?
-    ORDER BY name`;
+    WHERE artist_name LIKE ?
+    ORDER BY artist_name`;
   const values = [`%${query}%`];
   connection.query(queryString, values, (error, results) => {
     if (error) {
       console.log(error);
-      res.json({ message: error });
+      response.json({ message: error });
     } else {
       response.json(results);
     }
   });
 });
 
-artistRouter.get("/artists/:id", (req, res) => {
+artistRouter.get("/:id", (req, res) => {
   const id = req.params.id;
   const query = /* SQL */ `SELECT * FROM artists WHERE artist_id=?;`;
   const values = [id];
@@ -69,7 +69,7 @@ artistRouter.get("/:id/albums", (request, response) => {
   connection.query(queryString, values, (error, results) => {
     if (error) {
       console.log(error);
-      res.json({ message: error });
+      response.json({ message: error });
     } else {
       response.json(results);
     }

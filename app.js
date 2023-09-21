@@ -6,11 +6,7 @@ import trackRouter from "./routes/tracks.js";
 
 const app = express();
 app.use(express.json());
-app.use(
-  cors({
-    origin: "*",
-  })
-);
+app.use(cors());
 app.use("/albums", albumRouter);
 app.use("/artists", artistRouter);
 app.use("/tracks", trackRouter);
