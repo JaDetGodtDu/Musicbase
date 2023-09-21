@@ -56,11 +56,10 @@ artistRouter.get("/:id/albums", (request, response) => {
                         artists.artist_id AS artistId,
                         artists.artist_name AS artistName
         FROM albums
-        INNER JOIN artists ON albums.artist_id = artists.artist_id
         INNER JOIN albums_tracks ON albums.album_id = albums_tracks.album_id
         INNER JOIN tracks ON albums_tracks.track_id = tracks.track_id
+        INNER JOIN artists ON albums.artist_id = artists.artist_id
         INNER JOIN tracks_artists ON tracks.track_id = tracks_artists.track_id
-        INNER JOIN artists AS trackArtists ON tracks_artists.artist_id = trackArtists.artist_id
         WHERE artists.artist_id = ?;
     `;
 

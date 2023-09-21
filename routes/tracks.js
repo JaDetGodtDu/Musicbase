@@ -3,7 +3,7 @@ import connection from "../database.js";
 
 const trackRouter = Router();
 
-trackRouter.get("/", (request, response) => {
+trackRouter.get("/", async (request, response) => {
   const queryString = /*sql*/ `
         SELECT tracks.*,
        artists.artist_name AS artistName,
@@ -47,25 +47,24 @@ trackRouter.get("/:id", (request, response) => {
   });
 });
 
-trackRouter.post("/", (req, res) => {
+trackRouter.post("/", async (req, res) => {
   const track = req.body;
-  const query = /* SQL */ `INSERT INTO tracks(track_name, album_id) values (?,?);`;
-  const values = [track.track_name, track.album_id];
+  const trackQuery = /* SQL */ `INSERT INTO tracks(track_name) VALUES (?);`;
+  const trackValues = [track.track_name];
 
-  connection.query(query, values, (error, results, fields) => {
-    if (error) {
-      console.log(error);
-      res.json({ message: error });
-    } else {
-      res.json(results);
-    }
-  });
+  const [trackResult] = await connection.execute(trackQuery, trackValues);
+  const newTrackId = trackResult.insertId;
+  const artistTrackQuery = /*sql*/ `INSERT INTO tracks_artists (artist_id, track_id) VALUES(?,?)`;
+  const artistTrackValues = [track.artistId, newTrackId];
+  const [artistTrackResult] = await connection.execute(artistTrackQuery, artistTrackValues);
+  console.log(artistTrackResult);
+  res.json({ message: "New song created" });
 });
 trackRouter.put("/:id", async (req, res) => {
   const id = req.params.id;
   const track = req.body;
-  const query = /* SQL */ `UPDATE tracks SET track_name=?, album_id=? WHERE track_id=?`;
-  const values = [track.track_name, track.album_id, id];
+  const query = /* SQL */ `UPDATE tracks SET track_name=? WHERE track_id=?`;
+  const values = [track.track_name, id];
   connection.query(query, values, (error, results, fields) => {
     if (error) {
       console.log(error);

@@ -34,11 +34,10 @@ albumRouter.get("/:id", (request, response) => {
                tracks.track_id AS trackId,
                tracks.track_name AS trackTitle
         FROM albums
-        INNER JOIN artists ON albums.artist_id = artists.artist_id
         INNER JOIN albums_tracks ON albums.album_id = albums_tracks.album_id
         INNER JOIN tracks ON albums_tracks.track_id = tracks.track_id
         INNER JOIN tracks_artists ON tracks.track_id = tracks_artists.track_id
-        INNER JOIN artists AS trackArtists ON tracks_artists.artist_id = trackArtists.artist_id
+        INNER JOIN artists ON albums.artist_id = artists.artist_id
         WHERE albums.album_id = ?
     `;
   const values = [id];
@@ -110,8 +109,8 @@ albumRouter.post("/", (req, res) => {
   const album = req.body;
   const query =
     /* SQL */
-    `INSERT INTO albums(album_name, year_of_release, artist_id) values (?,?,?);`;
-  const values = [album.album_name, album.year_of_release, album.artist_id];
+    `INSERT INTO albums(album_name, year_of_release) values (?,?,?);`;
+  const values = [album.album_name, album.year_of_release];
 
   connection.query(query, values, (error, results, fields) => {
     if (error) {
@@ -128,8 +127,8 @@ albumRouter.put("/:id", (req, res) => {
   const album = req.body;
   const query =
     /* SQL */
-    `UPDATE albums SET album_name=?, year_of_release=?, artist_id=? WHERE album_id=?`;
-  const values = [album.album_name, album.year_of_release, album.artist_id, id];
+    `UPDATE albums SET album_name=?, year_of_release=? WHERE album_id=?`;
+  const values = [album.album_name, album.year_of_release, id];
   connection.query(query, values, (error, results, fields) => {
     if (error) {
       console.log(error);
