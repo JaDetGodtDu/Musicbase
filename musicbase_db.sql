@@ -12,34 +12,28 @@ CREATE TABLE artists (
 CREATE TABLE albums (
     album_id INT AUTO_INCREMENT PRIMARY KEY,
     album_name varchar(255) NOT NULL,
-    year_of_release INT NOT NULL,
-    artist_id INT,
-    FOREIGN KEY (artist_id) REFERENCES artists(artist_id)
+    year_of_release INT NOT NULL
 );
 -- Song table
 CREATE TABLE tracks (
     track_id INT AUTO_INCREMENT PRIMARY KEY,
-    track_name varchar(255) NOT NULL,
-    album_id INT,
-    FOREIGN KEY (album_id) REFERENCES albums(album_id)
+    track_name varchar(255) NOT NULL
 );
-INSERT INTO tracks (track_id, track_name, album_id)
-VALUES (track_id, "i love you bingus", 1);
 
 -- Junction Table
 CREATE TABLE tracks_artists(
     track_id INT,
     artist_id INT,
     PRIMARY KEY (track_id,artist_id),
-    FOREIGN KEY (track_id) REFERENCES tracks(track_id),
-    FOREIGN KEY (artist_id) REFERENCES artists(artist_id)
+    FOREIGN KEY (track_id) REFERENCES tracks(track_id) ON DELETE CASCADE,
+    FOREIGN KEY (artist_id) REFERENCES artists(artist_id) ON DELETE CASCADE
 );
 CREATE TABLE albums_tracks (
     album_id INT,
     track_id INT,
     PRIMARY KEY (album_id, track_id),
-    FOREIGN KEY (album_id) REFERENCES albums(album_id),
-    FOREIGN KEY (track_id) REFERENCES tracks(track_id)
+    FOREIGN KEY (album_id) REFERENCES albums(album_id) ON DELETE CASCADE,
+    FOREIGN KEY (track_id) REFERENCES tracks(track_id) ON DELETE CASCADE
 );
 INSERT INTO artists (artist_name) VALUES
     ('Metallica'),
@@ -48,18 +42,18 @@ INSERT INTO artists (artist_name) VALUES
     ('Slayer');
 
 -- Insert data into the 'albums' table
-INSERT INTO albums (album_name, year_of_release, artist_id) VALUES
-    ('Master of Puppets', 1986, 1),          -- Metallica
-    ('The Number of the Beast', 1982, 2),   -- Iron Maiden
-    ('Paranoid', 1970, 3),                  -- Black Sabbath
-    ('Reign in Blood', 1986, 4);            -- Slayer
+INSERT INTO albums (album_name, year_of_release) VALUES
+    ('Master of Puppets', 1986),          -- Metallica
+    ('The Number of the Beast', 1982),   -- Iron Maiden
+    ('Paranoid', 1970),                  -- Black Sabbath
+    ('Reign in Blood', 1986);            -- Slayer
 
 -- Insert data into the 'tracks' table
-INSERT INTO tracks (track_name, album_id) VALUES
-    ('Battery', 1),                  -- Master of Puppets by Metallica
-    ('The Trooper', 2),             -- The Number of the Beast by Iron Maiden
-    ('War Pigs', 3),                -- Paranoid by Black Sabbath
-    ('Angel of Death', 4);          -- Reign in Blood by Slayer
+INSERT INTO tracks (track_name) VALUES
+    ('Battery'),                  -- Master of Puppets by Metallica
+    ('The Trooper'),             -- The Number of the Beast by Iron Maiden
+    ('War Pigs'),                -- Paranoid by Black Sabbath
+    ('Angel of Death');          -- Reign in Blood by Slayer
 
 -- Insert data into the 'tracks_artists' junction table (associating songs with artists)
 INSERT INTO tracks_artists (track_id, artist_id) VALUES

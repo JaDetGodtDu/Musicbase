@@ -1,5 +1,6 @@
 import cors from "cors";
 import express from "express";
+import connection from "./database.js";
 import albumRouter from "./routes/albums.js";
 import artistRouter from "./routes/artists.js";
 import trackRouter from "./routes/tracks.js";
