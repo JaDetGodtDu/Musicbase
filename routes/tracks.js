@@ -16,7 +16,7 @@ INNER JOIN artists ON tracks_artists.artist_id = artists.artist_id
   response.json(results);
 });
 
-trackRouter.get("/:id", (request, response) => {
+trackRouter.get("/:id", async (request, response) => {
   const id = request.params.id;
   const queryString = /*sql*/ `
         SELECT tracks.*,
@@ -30,14 +30,8 @@ trackRouter.get("/:id", (request, response) => {
 
   const values = [id];
 
-  connection.query(queryString, values, (error, results) => {
-    if (error) {
-      console.log(error);
-      response.json({ message: error });
-    } else {
-      response.json(results[0]);
-    }
-  });
+  const [results] = await connection.execute(queryString, values);
+  response.json(results);
 });
 
 trackRouter.post("/", async (req, res) => {
