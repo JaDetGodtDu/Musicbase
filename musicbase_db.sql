@@ -25,15 +25,15 @@ CREATE TABLE tracks_artists(
     track_id INT,
     artist_id INT,
     PRIMARY KEY (track_id,artist_id),
-    FOREIGN KEY (track_id) REFERENCES tracks(track_id),
-    FOREIGN KEY (artist_id) REFERENCES artists(artist_id)
+    FOREIGN KEY (track_id) REFERENCES tracks(track_id) ON DELETE CASCADE,
+    FOREIGN KEY (artist_id) REFERENCES artists(artist_id) ON DELETE CASCADE
 );
 CREATE TABLE albums_tracks (
     album_id INT,
     track_id INT,
     PRIMARY KEY (album_id, track_id),
-    FOREIGN KEY (album_id) REFERENCES albums(album_id),
-    FOREIGN KEY (track_id) REFERENCES tracks(track_id)
+    FOREIGN KEY (album_id) REFERENCES albums(album_id) ON DELETE CASCADE,
+    FOREIGN KEY (track_id) REFERENCES tracks(track_id) ON DELETE CASCADE
 );
 INSERT INTO artists (artist_name) VALUES
     ('Metallica'),
