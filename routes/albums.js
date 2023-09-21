@@ -60,6 +60,17 @@ albumRouter.get("/:id/tracks", async (request, response) => {
   const [results] = await connection.execute(queryString, values);
   response.json(results);
 });
+albumRouter.get("/search", async (request, response) => {
+  const query = request.query.q.toLocaleLowerCase();
+  const queryString = /*sql*/ `
+    SELECT * 
+    FROM albums
+    WHERE album_name LIKE ?
+    ORDER BY album_name`;
+  const values = [`%${query}%`];
+  const [results] = await connection.execute(queryString, values);
+  response.json(results);
+});
 
 albumRouter.post("/", async (req, res) => {
   const album = req.body;

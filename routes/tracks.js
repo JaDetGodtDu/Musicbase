@@ -34,6 +34,18 @@ trackRouter.get("/:id", async (request, response) => {
   response.json(results);
 });
 
+trackRouter.get("/search", async (request, response) => {
+  const query = request.query.q.toLocaleLowerCase();
+  const queryString = /*sql*/ `
+    SELECT * 
+    FROM tracks
+    WHERE track_name LIKE ?
+    ORDER BY track_name`;
+  const values = [`%${query}%`];
+  const [results] = await connection.execute(queryString, values);
+  response.json(results);
+});
+
 trackRouter.post("/", async (req, res) => {
   const track = req.body;
   const trackQuery = /* SQL */ `INSERT INTO tracks(track_name) VALUES (?);`;
