@@ -75,9 +75,9 @@ trackRouter.put("/:id", async (req, res) => {
     }
   });
 });
-trackRouter.delete("/tracks/:id", async (req, res) => {
+trackRouter.delete("/:id", async (req, res) => {
   const id = req.params.id;
-  const query = /* SQL */ `DELETE FROM tracks WHERE id=?`;
+  const query = /* SQL */ `DELETE FROM tracks WHERE track_id=?`;
   const values = [id];
   connection.query(query, values, (error, results, fields) => {
     if (error) {
