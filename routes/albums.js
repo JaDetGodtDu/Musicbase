@@ -1,5 +1,6 @@
 import { Router } from "express";
-import connection from "../database.js";
+import dbConnection from "../database.js";
+
 const albumRouter = Router();
 
 albumRouter.get("/", async (request, response) => {
@@ -12,7 +13,7 @@ albumRouter.get("/", async (request, response) => {
   INNER JOIN artists ON tracks_artists.artist_id = artists.artist_id
       `;
 
-  const [results] = await connection.execute(queryString);
+  const [results] = await dbConnection.execute(queryString);
   response.json(results);
 });
 
@@ -34,7 +35,7 @@ albumRouter.get("/:id", async (request, response) => {
     `;
   const values = [id];
 
-  const [results] = await connection.execute(queryString, values);
+  const [results] = await await dbConnection.execute(queryString, values);
   response.json(results);
 });
 
@@ -57,7 +58,7 @@ albumRouter.get("/:id/tracks", async (request, response) => {
     `;
   const values = [id];
 
-  const [results] = await connection.execute(queryString, values);
+  const [results] = await dbConnection.execute(queryString, values);
   response.json(results);
 });
 albumRouter.get("/search", async (request, response) => {
@@ -68,7 +69,7 @@ albumRouter.get("/search", async (request, response) => {
     WHERE album_name LIKE ?
     ORDER BY album_name`;
   const values = [`%${query}%`];
-  const [results] = await connection.execute(queryString, values);
+  const [results] = await dbConnection.execute(queryString, values);
   response.json(results);
 });
 
@@ -79,7 +80,7 @@ albumRouter.post("/", async (req, res) => {
     `INSERT INTO albums(album_name, year_of_release) values (?,?);`;
   const albumValues = [album.album_name, album.year_of_release];
 
-  const [results] = await connection.execute(albumQuery, albumValues);
+  const [results] = await dbConnection.execute(albumQuery, albumValues);
   res.json(results);
 });
 
@@ -90,7 +91,7 @@ albumRouter.put("/:id", async (req, res) => {
     /* SQL */
     `UPDATE albums SET album_name=?, year_of_release=? WHERE album_id=?`;
   const values = [album.album_name, album.year_of_release, id];
-  const [results] = await connection.execute(query, values);
+  const [results] = await dbConnection.execute(query, values);
   res.json(results);
 });
 
@@ -98,7 +99,7 @@ albumRouter.delete("/:id", async (req, res) => {
   const id = req.params.id;
   const query = /* SQL */ `DELETE FROM albums WHERE album_id=?`;
   const values = [id];
-  const [results] = await connection.execute(query, values);
+  const [results] = await dbConnection.execute(query, values);
   res.json(results);
 });
 

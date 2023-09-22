@@ -68,4 +68,4 @@ INSERT INTO albums_tracks (album_id, track_id) VALUES
     (2, 2),   -- The Number of the Beast (The Trooper)
     (3, 3),   -- Paranoid (War Pigs)
     (4, 4);   -- Reign in Blood (Angel of Death)
-
+    
