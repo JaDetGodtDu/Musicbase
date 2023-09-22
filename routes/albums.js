@@ -35,7 +35,7 @@ albumRouter.get("/:id", async (request, response) => {
     `;
   const values = [id];
 
-  const [results] = await await dbConnection.execute(queryString, values);
+  const [results] = await dbConnection.execute(queryString, values);
   response.json(results);
 });
 
