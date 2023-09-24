@@ -1,5 +1,5 @@
 import { Router } from "express";
-import connection from "../database.js";
+import dbConnectiononnection from "../database.js";
 
 const searchRouter = Router();
 
@@ -14,9 +14,9 @@ searchRouter.get("/", async (req, res) => {
 
   const values = [`%${query}%`];
 
-  const [artistsResults] = await connection.execute(queryArtists, values);
-  const [tracksResults] = await connection.execute(queryTracks, values);
-  const [albumsResults] = await connection.execute(queryAlbums, values);
+  const [artistsResults] = await dbConnectiononnection.execute(queryArtists, values);
+  const [tracksResults] = await dbConnectiononnection.execute(queryTracks, values);
+  const [albumsResults] = await dbConnectiononnection.execute(queryAlbums, values);
   console.log(artistsResults, tracksResults, albumsResults);
 
   const results = {
