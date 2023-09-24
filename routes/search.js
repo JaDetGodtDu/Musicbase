@@ -3,7 +3,7 @@ import connection from "../database.js";
 
 const searchRouter = Router();
 
-searchRouter.get("/search", async (req, res) => {
+searchRouter.get("/", async (req, res) => {
   const query = req.query.q.toLocaleLowerCase();
   const queryArtists = /*sql*/ `
         SELECT * FROM artists WHERE name LIKE ? ORDER BY name;`;
