@@ -8,17 +8,6 @@ artistRouter.get("/", async (req, res) => {
   const [results] = await dbConnection.execute(query);
   res.json(results);
 });
-artistRouter.get("/search", async (request, response) => {
-  const query = request.query.q.toLocaleLowerCase();
-  const queryString = /*sql*/ `
-    SELECT * 
-    FROM artists
-    WHERE artist_name LIKE ?
-    ORDER BY artist_name`;
-  const values = [`%${query}%`];
-  const [results] = await dbConnection.execute(queryString, values);
-  response.json(results);
-});
 
 artistRouter.get("/:id", async (req, res) => {
   const id = req.params.id;
