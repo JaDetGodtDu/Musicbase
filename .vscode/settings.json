@@ -1,4 +1,5 @@
 {
   "appService.defaultWebAppToDeploy": "/subscriptions/a01621b4-29e6-4fce-bf5b-4924cb020f67/resourceGroups/appsvc_linux_centralus/providers/Microsoft.Web/sites/musicbase",
-  "appService.deploySubpath": "."
+  "appService.deploySubpath": ".",
+  "liveServer.settings.port": 5501
 }

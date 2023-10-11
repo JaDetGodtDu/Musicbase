@@ -6,11 +6,11 @@ const searchRouter = Router();
 searchRouter.get("/", async (req, res) => {
   const query = req.query.q.toLocaleLowerCase();
   const queryArtists = /*sql*/ `
-        SELECT * FROM artists WHERE name LIKE ? ORDER BY name;`;
+        SELECT * FROM artists WHERE artist_name LIKE ? ORDER BY artist_name;`;
   const queryTracks = /* sql */ `
-        SELECT * FROM tracks WHERE name LIKE ? ORDER BY name;`;
+        SELECT * FROM tracks WHERE track_name LIKE ? ORDER BY track_name;`;
   const queryAlbums = /* sql */ `
-        SELECT * FROM albums WHERE name LIKE ? ORDER BY name;`;
+        SELECT * FROM albums WHERE album_name LIKE ? ORDER BY album_name;`;
 
   const values = [`%${query}%`];
 
